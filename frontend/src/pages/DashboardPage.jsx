@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { resumeAPI, jobPostingAPI, analysisAPI } from '../utils/api'
+import PDFGenerator from '../components/PDFGenerator'
 import {
   DocumentTextIcon,
   BriefcaseIcon,
   ChartBarIcon,
   PlusIcon,
   EyeIcon,
-  TrashIcon
+  TrashIcon,
+  DocumentArrowDownIcon
 } from '@heroicons/react/24/outline'
 
 export default function DashboardPage() {
@@ -19,6 +21,8 @@ export default function DashboardPage() {
   const [recentResumes, setRecentResumes] = useState([])
   const [recentAnalyses, setRecentAnalyses] = useState([])
   const [loading, setLoading] = useState(true)
+  const [showPDFGenerator, setShowPDFGenerator] = useState(false)
+  const [selectedResumeId, setSelectedResumeId] = useState(null)
 
   useEffect(() => {
     loadDashboardData()
@@ -49,6 +53,11 @@ export default function DashboardPage() {
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('tr-TR')
+  }
+
+  const handleGeneratePDF = (resumeId) => {
+    setSelectedResumeId(resumeId)
+    setShowPDFGenerator(true)
   }
 
   const getStatusBadge = (status) => {
@@ -205,9 +214,17 @@ export default function DashboardPage() {
                       <Link
                         to={`/resume/edit/${resume.id}`}
                         className="text-blue-600 hover:text-blue-900"
+                        title="Edit Resume"
                       >
                         <EyeIcon className="h-4 w-4" />
                       </Link>
+                      <button
+                        onClick={() => handleGeneratePDF(resume.id)}
+                        className="text-green-600 hover:text-green-900"
+                        title="Generate PDF"
+                      >
+                        <DocumentArrowDownIcon className="h-4 w-4" />
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -280,6 +297,17 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* PDF Generator Modal */}
+      {showPDFGenerator && (
+        <PDFGenerator
+          resumeId={selectedResumeId}
+          onClose={() => {
+            setShowPDFGenerator(false)
+            setSelectedResumeId(null)
+          }}
+        />
+      )}
     </div>
   )
 }

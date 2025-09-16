@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from ..models.resume import Resume
 from ..models.job_posting import JobPosting
 from ..models.analysis import Analysis, AnalysisStatus
-from .simple_nlp import simple_nlp_service
+from .basic_nlp import basic_nlp_service
 
 class AnalysisService:
     """Service for analyzing resume-job posting compatibility"""
@@ -37,8 +37,8 @@ class AnalysisService:
             # Prepare job posting data
             job_text = self._get_job_posting_text(job_posting)
 
-            # Perform simplified analysis
-            match_results = simple_nlp_service.calculate_match_score(resume_text, job_text)
+            # Perform basic analysis
+            match_results = basic_nlp_service.calculate_match_score(resume_text, job_text)
 
             # Update analysis with comprehensive results
             processing_time = time.time() - start_time

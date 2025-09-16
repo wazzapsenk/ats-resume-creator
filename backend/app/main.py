@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import auth, resume, analysis, latex, job_posting, upload
+from app.routers import auth, resume, analysis, job_posting, upload, pdf
 from app.core.config import settings
 
 app = FastAPI(
@@ -21,8 +21,8 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(resume.router, prefix="/api/resume", tags=["resume"])
 app.include_router(job_posting.router, prefix="/api/job-posting", tags=["job-posting"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["analysis"])
-app.include_router(latex.router, prefix="/api/latex", tags=["latex"])
 app.include_router(upload.router, prefix="/api/upload", tags=["upload"])
+app.include_router(pdf.router, tags=["pdf"])
 
 @app.get("/")
 async def root():

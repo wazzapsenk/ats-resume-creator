@@ -1,0 +1,186 @@
+\documentclass[11pt,letterpaper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{array}
+\usepackage{tabularx}
+
+% Formatting
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Custom section formatting
+\titleformat{\section}
+  {\large\bfseries\uppercase}
+  {}
+  {0em}
+  {}
+  [\titlerule]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries}
+  {}
+  {0em}
+  {}
+
+% Custom commands
+\newcommand{\resumeheader}[6]{
+  \begin{center}
+    {\Large\bfseries #1 #2} \\
+    \vspace{2pt}
+    #3 \\
+    \vspace{2pt}
+    #4 \hspace{5pt} $\cdot$ \hspace{5pt} #5 \\
+    {% if #6 %}
+    \vspace{2pt}
+    #6
+    {% endif %}
+  \end{center}
+  \vspace{10pt}
+}
+
+\newcommand{\experienceitem}[5]{
+  \subsection{#1 \hfill #2}
+  \textit{#3} \hfill \textit{#4}
+  {% if #5 %}
+  \vspace{2pt}
+
+  #5
+  {% endif %}
+  \vspace{5pt}
+}
+
+\newcommand{\educationitem}[5]{
+  \subsection{#1 \hfill #2}
+  \textit{#3} \hfill \textit{#4}
+  {% if #5 %}
+
+  #5
+  {% endif %}
+  \vspace{5pt}
+}
+
+\newcommand{\projectitem}[3]{
+  \subsection{#1{% if #2 %} \hfill \href{#2}{#2}{% endif %}}
+  #3
+  \vspace{5pt}
+}
+
+\newcommand{\skillsection}[2]{
+  \textbf{#1:} #2 \\
+  \vspace{2pt}
+}
+
+\begin{document}
+
+% Header
+\resumeheader{{{first_name}}}{{{last_name}}}{{{address}}}{{{phone}}}{{{email}}}{{% if website %}{{website}}{% endif %}}
+
+% Summary/Objective
+{% if summary %}
+\section{Professional Summary}
+{{summary}}
+\vspace{5pt}
+{% endif %}
+
+% Experience
+{% if work_experience %}
+\section{Professional Experience}
+{% for exp in work_experience %}
+\experienceitem{{{exp.position}}}{{{exp.start_date}}--{% if exp.current %}Present{% else %}{{exp.end_date}}{% endif %}}{{{exp.company}}}{{{exp.location}}}{%
+{% if exp.description %}
+{{exp.description|replace('\n', '\\\\ ')|safe}}
+
+{% endif %}
+{% if exp.achievements %}
+\begin{itemize}[leftmargin=15pt, itemsep=2pt]
+{% for achievement in exp.achievements %}
+\item {{achievement|safe}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+%}
+{% endfor %}
+{% endif %}
+
+% Education
+{% if education %}
+\section{Education}
+{% for edu in education %}
+\educationitem{{{edu.degree}}}{{{edu.start_date}}--{{edu.end_date}}}{{{edu.institution}}}{{{edu.location}}}{%
+{% if edu.gpa %}GPA: {{edu.gpa}}
+
+{% endif %}
+{% if edu.description %}
+{{edu.description|replace('\n', '\\\\ ')|safe}}
+
+{% endif %}
+{% if edu.coursework %}
+\textbf{Relevant Coursework:} {{edu.coursework|join(', ')}}
+{% endif %}
+%}
+{% endfor %}
+{% endif %}
+
+% Skills
+{% if skills %}
+\section{Technical Skills}
+{% for skill_category in skills %}
+\skillsection{{{skill_category.category}}}{%
+{% if skill_category.items is string %}
+{{skill_category.items}}
+{% else %}
+{{skill_category.items|join(', ')}}
+{% endif %}
+%}
+{% endfor %}
+{% endif %}
+
+% Projects
+{% if projects %}
+\section{Projects}
+{% for project in projects %}
+\projectitem{{{project.name}}}{{% if project.url %}{{project.url}}{% endif %}}{%
+{{project.description|replace('\n', '\\\\ ')|safe}}
+{% if project.technologies %}
+
+\textbf{Technologies:} {{project.technologies|join(', ') if project.technologies is not string else project.technologies}}
+{% endif %}
+%}
+{% endfor %}
+{% endif %}
+
+% Certifications
+{% if certifications %}
+\section{Certifications}
+\begin{itemize}[leftmargin=15pt, itemsep=2pt]
+{% for cert in certifications %}
+\item \textbf{{{cert.name}}} -- {{cert.issuer}} ({{cert.date}}){% if cert.credential_id %} -- ID: {{cert.credential_id}}{% endif %}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+% Languages
+{% if languages %}
+\section{Languages}
+{% for lang in languages %}
+\skillsection{{{lang.language}}}{{{lang.proficiency}}}
+{% endfor %}
+{% endif %}
+
+% Awards
+{% if awards %}
+\section{Awards \& Honors}
+\begin{itemize}[leftmargin=15pt, itemsep=2pt]
+{% for award in awards %}
+\item \textbf{{{award.name}}} -- {{award.issuer}} ({{award.date}}){% if award.description %} -- {{award.description}}{% endif %}
+{% endfor %}
+\end{itemize}
+{% endif %}
+
+\end{document}

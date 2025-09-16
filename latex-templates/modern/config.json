@@ -1,0 +1,24 @@
+{
+  "name": "Modern CV",
+  "description": "Clean and professional modern CV template using moderncv package",
+  "style": "modern",
+  "ats_optimized": true,
+  "supports_photo": true,
+  "supports_colors": true,
+  "available_colors": ["blue", "green", "red", "orange", "purple", "grey"],
+  "sections": [
+    "personal_info",
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "projects",
+    "certifications",
+    "languages",
+    "awards"
+  ],
+  "preview_image": "modern/preview.png",
+  "font_size": "11pt",
+  "paper_size": "letterpaper",
+  "margin_scale": 0.85
+}

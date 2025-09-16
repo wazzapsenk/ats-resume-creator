@@ -1,0 +1,122 @@
+\documentclass[11pt,letterpaper,sans]{moderncv}
+
+% Modern CV style and color
+\moderncvstyle{casual}
+\moderncvcolor{blue}
+
+% Character encoding
+\usepackage[utf8]{inputenc}
+
+% Adjust the page margins
+\usepackage[scale=0.85]{geometry}
+
+% Personal data
+\name{{{first_name}}}{{{last_name}}}
+\title{{{title}}}
+\address{{{address}}}
+\phone[mobile]{{{phone}}}
+\email{{{email}}}
+\homepage{{{website}}}
+\social[linkedin]{{{linkedin}}}
+
+% Optional photo
+{% if photo %}
+\photo[64pt][0.4pt]{{{photo}}}
+{% endif %}
+
+% Quote/objective
+{% if summary %}
+\quote{{{summary}}}
+{% endif %}
+
+\begin{document}
+
+\makecvtitle
+
+% Experience section
+{% if work_experience %}
+\section{Experience}
+{% for exp in work_experience %}
+\cventry{{{exp.start_date}}--{% if exp.current %}Present{% else %}{{exp.end_date}}{% endif %}}{{{exp.position}}}{{{exp.company}}}{{{exp.location}}}{}{
+{% if exp.description %}
+{{exp.description|replace('\n', '\\\\')|safe}}
+{% endif %}
+{% if exp.achievements %}
+\begin{itemize}
+{% for achievement in exp.achievements %}
+\item {{achievement}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+}
+{% endfor %}
+{% endif %}
+
+% Education section
+{% if education %}
+\section{Education}
+{% for edu in education %}
+\cventry{{{edu.start_date}}--{{edu.end_date}}}{{{edu.degree}}}{{{edu.institution}}}{{{edu.location}}}{% if edu.gpa %}{GPA: {{edu.gpa}}}{% endif %}{
+{% if edu.description %}
+{{edu.description|replace('\n', '\\\\')|safe}}
+{% endif %}
+{% if edu.coursework %}
+\textit{Relevant Coursework:} {{edu.coursework|join(', ')}}
+{% endif %}
+}
+{% endfor %}
+{% endif %}
+
+% Skills section
+{% if skills %}
+\section{Technical Skills}
+{% for skill_category in skills %}
+\cvitem{{{skill_category.category}}}{
+{% if skill_category.items is string %}
+{{skill_category.items}}
+{% else %}
+{{skill_category.items|join(', ')}}
+{% endif %}
+}
+{% endfor %}
+{% endif %}
+
+% Projects section
+{% if projects %}
+\section{Projects}
+{% for project in projects %}
+\cventry{}{{{project.name}}}{% if project.url %}{{{project.url}}}{% endif %}{}{}{
+{{project.description|replace('\n', '\\\\')|safe}}
+{% if project.technologies %}
+\\
+\textit{Technologies:} {{project.technologies|join(', ') if project.technologies is not string else project.technologies}}
+{% endif %}
+}
+{% endfor %}
+{% endif %}
+
+% Certifications section
+{% if certifications %}
+\section{Certifications}
+{% for cert in certifications %}
+\cventry{{{cert.date}}}{{{cert.name}}}{{{cert.issuer}}}{}{% if cert.credential_id %}{ID: {{cert.credential_id}}}{% endif %}{}
+{% endfor %}
+{% endif %}
+
+% Languages section
+{% if languages %}
+\section{Languages}
+{% for lang in languages %}
+\cvitem{{{lang.language}}}{{{lang.proficiency}}}
+{% endfor %}
+{% endif %}
+
+% Awards section
+{% if awards %}
+\section{Awards \& Honors}
+{% for award in awards %}
+\cventry{{{award.date}}}{{{award.name}}}{{{award.issuer}}}{}{}{{{award.description}}}
+{% endfor %}
+{% endif %}
+
+\end{document}

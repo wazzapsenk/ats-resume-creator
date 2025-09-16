@@ -1,0 +1,142 @@
+\documentclass[10pt,letterpaper]{article}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% Formatting
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+
+% Custom commands
+\newcommand{\name}[1]{
+  \begin{center}
+    {\LARGE\textbf{#1}}
+  \end{center}
+  \vspace{5pt}
+}
+
+\newcommand{\contact}[4]{
+  \begin{center}
+    #1 $\cdot$ #2 $\cdot$ #3 $\cdot$ #4
+  \end{center}
+  \vspace{10pt}
+}
+
+\newcommand{\sectionheader}[1]{
+  \vspace{5pt}
+  \textbf{\uppercase{#1}}
+  \vspace{2pt}
+  \hrule
+  \vspace{5pt}
+}
+
+\newcommand{\entry}[4]{
+  \textbf{#1} \hfill #2 \\
+  \textit{#3} \hfill \textit{#4}
+  \vspace{3pt}
+}
+
+\begin{document}
+
+% Header
+\name{{{first_name}} {{last_name}}}
+\contact{{{email}}}{{{phone}}}{{% if linkedin %}{{linkedin}}{% endif %}}{{% if website %}{{website}}{% endif %}}
+
+% Summary
+{% if summary %}
+\sectionheader{Summary}
+{{summary}}
+\vspace{5pt}
+{% endif %}
+
+% Experience
+{% if work_experience %}
+\sectionheader{Experience}
+{% for exp in work_experience %}
+\entry{{{exp.position}}}{{{exp.start_date}}--{% if exp.current %}Present{% else %}{{exp.end_date}}{% endif %}}{{{exp.company}}}{{{exp.location}}}
+{% if exp.description %}
+{{exp.description|replace('\n', '\\\\ ')|safe}}
+{% endif %}
+{% if exp.achievements %}
+\begin{itemize}[leftmargin=10pt, itemsep=1pt, topsep=2pt]
+{% for achievement in exp.achievements %}
+\item {{achievement|safe}}
+{% endfor %}
+\end{itemize}
+{% endif %}
+\vspace{3pt}
+{% endfor %}
+{% endif %}
+
+% Education
+{% if education %}
+\sectionheader{Education}
+{% for edu in education %}
+\entry{{{edu.degree}}}{{{edu.start_date}}--{{edu.end_date}}}{{{edu.institution}}}{{{edu.location}}}
+{% if edu.gpa %}GPA: {{edu.gpa}}{% endif %}
+{% if edu.description %}
+{{edu.description|replace('\n', '\\\\ ')|safe}}
+{% endif %}
+{% if edu.coursework %}
+\textbf{Relevant Coursework:} {{edu.coursework|join(', ')}}
+{% endif %}
+\vspace{3pt}
+{% endfor %}
+{% endif %}
+
+% Skills
+{% if skills %}
+\sectionheader{Skills}
+{% for skill_category in skills %}
+\textbf{{{skill_category.category}}:}
+{% if skill_category.items is string %}
+{{skill_category.items}}
+{% else %}
+{{skill_category.items|join(', ')}}
+{% endif %}
+\\
+{% endfor %}
+{% endif %}
+
+% Projects
+{% if projects %}
+\sectionheader{Projects}
+{% for project in projects %}
+\textbf{{{project.name}}}{% if project.url %} (\href{{{project.url}}}{Link}){% endif %} \\
+{{project.description|replace('\n', '\\\\ ')|safe}}
+{% if project.technologies %}
+\textbf{Technologies:} {{project.technologies|join(', ') if project.technologies is not string else project.technologies}}
+{% endif %}
+\vspace{3pt}
+{% endfor %}
+{% endif %}
+
+% Certifications
+{% if certifications %}
+\sectionheader{Certifications}
+{% for cert in certifications %}
+\textbf{{{cert.name}}} -- {{cert.issuer}} ({{cert.date}}) \\
+{% endfor %}
+{% endif %}
+
+% Languages
+{% if languages %}
+\sectionheader{Languages}
+{% for lang in languages %}
+\textbf{{{lang.language}}:} {{lang.proficiency}} \\
+{% endfor %}
+{% endif %}
+
+% Awards
+{% if awards %}
+\sectionheader{Awards}
+{% for award in awards %}
+\textbf{{{award.name}}} -- {{award.issuer}} ({{award.date}}) \\
+{% endfor %}
+{% endif %}
+
+\end{document}

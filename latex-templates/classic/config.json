@@ -1,0 +1,23 @@
+{
+  "name": "Classic CV",
+  "description": "Traditional and ATS-friendly CV template with clean formatting",
+  "style": "classic",
+  "ats_optimized": true,
+  "supports_photo": false,
+  "supports_colors": false,
+  "sections": [
+    "personal_info",
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "projects",
+    "certifications",
+    "languages",
+    "awards"
+  ],
+  "preview_image": "classic/preview.png",
+  "font_size": "11pt",
+  "paper_size": "letterpaper",
+  "margin": "0.75in"
+}

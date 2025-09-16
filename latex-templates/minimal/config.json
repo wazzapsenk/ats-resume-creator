@@ -1,0 +1,23 @@
+{
+  "name": "Minimal CV",
+  "description": "Ultra-clean minimal CV template with maximum ATS compatibility",
+  "style": "minimal",
+  "ats_optimized": true,
+  "supports_photo": false,
+  "supports_colors": false,
+  "sections": [
+    "personal_info",
+    "summary",
+    "experience",
+    "education",
+    "skills",
+    "projects",
+    "certifications",
+    "languages",
+    "awards"
+  ],
+  "preview_image": "minimal/preview.png",
+  "font_size": "10pt",
+  "paper_size": "letterpaper",
+  "margin": "0.5in"
+}
